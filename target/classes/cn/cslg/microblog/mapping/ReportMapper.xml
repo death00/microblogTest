@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.cslg.microblog.DAO.ReportMapper" >
+  <resultMap id="BaseResultMap" type="cn.cslg.microblog.PO.Report" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="reporterId" property="reporterid" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="reportedId" property="reportedid" jdbcType="INTEGER" />
+    <result column="reportReason" property="reportreason" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="reportedUserId" property="reportedUserId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, reporterId, type, reportedId, reportReason, state, reportedUserId
+  </sql>
+  <insert id="insertSelective" parameterType="cn.cslg.microblog.PO.Report" >
+    insert into report
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reporterid != null" >
+        reporterId,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="reportedid != null" >
+        reportedId,
+      </if>
+      <if test="reportreason != null" >
+        reportReason,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="reportedUserId != null" >
+        reportedUserId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="reporterid != null" >
+        #{reporterid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="reportedid != null" >
+        #{reportedid,jdbcType=INTEGER},
+      </if>
+      <if test="reportreason != null" >
+        #{reportreason,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="reportedUserId != null" >
+        #{reportedUserId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.cslg.microblog.PO.Report" >
+    update report
+    <set >
+      <if test="reporterid != null" >
+        reporterId = #{reporterid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="reportedid != null" >
+        reportedId = #{reportedid,jdbcType=INTEGER},
+      </if>
+      <if test="reportreason != null" >
+        reportReason = #{reportreason,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="reportedUserId != null" >
+        reportedUserId = #{reportedUserId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.cslg.microblog.PO.Report" >
+    update report
+    set reporterId = #{reporterid,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      reportedId = #{reportedid,jdbcType=INTEGER},
+      reportReason = #{reportreason,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      reportedUserId = #{reportedUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="count" parameterType="cn.cslg.microblog.PO.Report" resultType="java.lang.Integer" >
+    select count(*) from report
+      <trim prefix="where " suffix="" suffixOverrides="and" >
+	      <if test="reporterid != null" >
+	        reporterId = #{reporterid,jdbcType=INTEGER} and
+	      </if>
+	      <if test="type != null" >
+	        type = #{type,jdbcType=INTEGER} and
+	      </if>
+	      <if test="reportedid != null" >
+	        reportedId = #{reportedid,jdbcType=INTEGER} and
+	      </if>
+	      <if test="reportreason != null" >
+	        reportReason = #{reportreason,jdbcType=VARCHAR} and
+	      </if>
+	      <if test="state != null" >
+	        state = #{state,jdbcType=INTEGER} and
+	      </if>
+	      <if test="reportedUserId != null" >
+	        reportedUserId = #{reportedUserId,jdbcType=INTEGER} and
+	      </if>
+      </trim>
+  </select>
+  
+  <select id="selectPage" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from report
+		where type = #{0,jdbcType=INTEGER} and state = #{1,jdbcType=INTEGER} order by id desc limit
+		#{2,jdbcType=INTEGER},#{3,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectByReport" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from report
+		where type = #{0,jdbcType=INTEGER} and state = #{1,jdbcType=INTEGER} order by id desc
+	</select>
+	
+	<select id="selectById" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from report
+		where id = #{0,jdbcType=INTEGER}
+	</select>
+</mapper>

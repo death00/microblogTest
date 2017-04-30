@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.cslg.microblog.DAO.MicroblogMapper">
+	<resultMap id="BaseResultMap" type="cn.cslg.microblog.PO.Microblog">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="userId" property="userid" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		<!-- <result column="sourceUserId" property="sourceuserid" jdbcType="INTEGER" 
+			/> -->
+		<result column="sourceMicroblogId" property="sourceMicroblogId"
+			jdbcType="INTEGER" />
+		<result column="forwardMicroblogId" property="forwardMicroblogId"
+			jdbcType="INTEGER" />
+		<result column="forwardRemark" property="forwardRemark"
+			jdbcType="VARCHAR" />
+		<result column="isForward" property="isForward" jdbcType="BIT" />
+		<association property="user" column="userId" select="getUser" />
+		<association property="sourceMicroblog" column="sourceMicroblogId"
+			select="getSourceMicroblog" />
+		<!-- <association property="sourceUser" column="sourceUserId" select="getUser"/> -->
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userId, content, time,
+		forwardRemark,isForward,sourceMicroblogId,forwardMicroblogId
+	</sql>
+	<select id="getUser" parameterType="int" resultType="cn.cslg.microblog.PO.User">
+		SELECT id, name, password, email, activecode, state FROM User WHERE id=#{id}
+	</select>
+
+	<select id="getSourceMicroblog" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from microblog
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from microblog
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from microblog where userId in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		order by time desc
+	</select>
+
+	<select id="selectFourBySourceMicroblogId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from microblog
+		where sourceMicroblogId = #{id,jdbcType=INTEGER} order by time desc limit
+		0,4
+	</select>
+	<select id="selectPageBySourceMicroblogId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from microblog
+		where sourceMicroblogId = #{0,jdbcType=INTEGER} order by time desc limit
+		#{1,jdbcType=INTEGER},#{2,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByUserId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from microblog
+		where userId = #{id,jdbcType=INTEGER} order by time desc
+	</select>
+
+	<select id="selectFourByForwardMicroblogId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from microblog
+		where forwardMicroblogId = #{forwardMicroblogId,jdbcType=INTEGER} order by
+		time desc limit 0,4
+	</select>
+
+	<select id="selectPageByForwardMicroblogId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from microblog
+		where forwardMicroblogId = #{0,jdbcType=INTEGER} order by time desc limit
+		#{1,jdbcType=INTEGER},#{2,jdbcType=INTEGER}
+	</select>
+
+	<select id="countByUserId" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select count(*) from microblog
+		where userId = #{id,jdbcType=INTEGER}
+	</select>
+
+
+	<select id="selectIllegibilityByContent" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from microblog where
+		<foreach item="item" index="index" collection="list" open="("
+			separator="and" close=")">
+			content like CONCAT('%',#{item},'%')
+		</foreach>
+		and isForward = 0
+		order by time desc
+	</select>
+
+	<select id="countBySourceMicroblogId" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select count(*) from microblog
+		where sourceMicroblogId = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="countByForwardMicroblogId" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select count(*) from microblog
+		where forwardMicroblogId = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from microblog
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="cn.cslg.microblog.PO.Microblog">
+		insert into microblog
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userid != null">
+				userId,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="time != null">
+				time,
+			</if>
+			<!-- <if test="sourceuserid != null" > sourceUserId, </if> -->
+			<if test="forwardRemark != null">
+				forwardRemark,
+			</if>
+			<if test="isForward != null">
+				isForward,
+			</if>
+			<if test="sourceMicroblogId != null">
+				sourceMicroblogId,
+			</if>
+			<if test="forwardMicroblogId != null">
+				forwardMicroblogId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				#{time,jdbcType=TIMESTAMP},
+			</if>
+			<!-- <if test="sourceuserid != null" > #{sourceuserid,jdbcType=INTEGER}, 
+				</if> -->
+			<if test="forwardRemark != null">
+				#{forwardRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="isForward != null">
+				#{isForward,jdbcType=BIT},
+			</if>
+			<if test="sourceMicroblogId != null">
+				#{sourceMicroblogId,jdbcType=INTEGER},
+			</if>
+			<if test="forwardMicroblogId != null">
+				#{forwardMicroblogId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+</mapper>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.cslg.microblog.DAO.RemarkMapper">
+	<resultMap id="BaseResultMap" type="cn.cslg.microblog.PO.Remark">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="microblogId" property="microblogid" jdbcType="INTEGER" />
+		<result column="isReply" property="isreply" jdbcType="BIT" />
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		<result column="isRead" property="isread" jdbcType="BIT" />
+
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="cn.cslg.microblog.PO.Remark"
+		extends="BaseResultMap">
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<association property="user" column="userId" select="getUser" />
+		<association property="replyUser" column="replyid" select="getUser" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userId, microblogId, isReply, replyId, time, isRead
+	</sql>
+	<sql id="Blob_Column_List">
+		content
+	</sql>
+	<select id="getUser" parameterType="int" resultType="cn.cslg.microblog.PO.User">
+		SELECT id,
+		name, password, email, activecode, state FROM User WHERE id=#{id,
+		jdbcType=INTEGER}
+	</select>
+	<select id="selectByMicroblogid" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from remark
+		where microblogid = #{microblogid,jdbcType=INTEGER} order
+		by time desc
+	</select>
+
+	<select id="selectFourByMicroblogid" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from remark
+		where microblogid = #{microblogid,jdbcType=INTEGER} order
+		by time desc
+		limit 0,4
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from remark
+		where id = #{id,jdbcType=INTEGER} order by time desc
+	</select>
+
+	<select id="selectPageByMicroblogId" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from remark
+		where microblogid = #{0,jdbcType=INTEGER} order by time
+		desc limit
+		#{1,jdbcType=INTEGER},#{2,jdbcType=INTEGER}
+	</select>
+
+	<select id="countByMicroblogId" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select count(*) from remark
+		where microblogid =
+		#{microblogid,jdbcType=INTEGER}
+	</select>
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from remark
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.cslg.microblog.PO.Remark">
+		insert into remark (id,
+		userId, microblogId,
+		isReply, replyId, time,
+		isRead, content)
+		values
+		(#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+		#{microblogid,jdbcType=INTEGER},
+		#{isreply,jdbcType=BIT},
+		#{replyId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP},
+		#{isread,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="cn.cslg.microblog.PO.Remark">
+		insert into remark
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userid != null">
+				userId,
+			</if>
+			<if test="microblogid != null">
+				microblogId,
+			</if>
+			<if test="isreply != null">
+				isReply,
+			</if>
+			<if test="replyid != null">
+				replyId,
+			</if>
+			<if test="time != null">
+				time,
+			</if>
+			<if test="isread != null">
+				isRead,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="microblogid != null">
+				#{microblogid,jdbcType=INTEGER},
+			</if>
+			<if test="isreply != null">
+				#{isreply,jdbcType=BIT},
+			</if>
+			<if test="replyid != null">
+				#{replyid,jdbcType=INTEGER},
+			</if>
+			<if test="time != null">
+				#{time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isread != null">
+				#{isread,jdbcType=BIT},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.cslg.microblog.PO.Remark">
+		update remark
+		<set>
+			<if test="userid != null">
+				userId = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="microblogid != null">
+				microblogId = #{microblogid,jdbcType=INTEGER},
+			</if>
+			<if test="isreply != null">
+				isReply = #{isreply,jdbcType=BIT},
+			</if>
+			<if test="replyid != null">
+				replyId = #{replyid,jdbcType=INTEGER},
+			</if>
+			<if test="time != null">
+				time = #{time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isread != null">
+				isRead = #{isread,jdbcType=BIT},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.cslg.microblog.PO.Remark">
+		update
+		remark
+		set userId = #{userid,jdbcType=INTEGER},
+		microblogId =
+		#{microblogid,jdbcType=INTEGER},
+		isReply = #{isreply,jdbcType=BIT},
+		replyId = #{replyid,jdbcType=INTEGER},
+		time =
+		#{time,jdbcType=TIMESTAMP},
+		isRead = #{isread,jdbcType=BIT},
+		content =
+		#{content,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.cslg.microblog.PO.Remark">
+		update remark
+		set
+		userId = #{userid,jdbcType=INTEGER},
+		microblogId =
+		#{microblogid,jdbcType=INTEGER},
+		isReply = #{isreply,jdbcType=BIT},
+		replyId = #{replyid,jdbcType=INTEGER},
+		time =
+		#{time,jdbcType=TIMESTAMP},
+		isRead = #{isread,jdbcType=BIT}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+</mapper>

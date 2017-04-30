@@ -1,0 +1,157 @@
+/**
+ * 主页CSS
+ */
+ /* 链接的默认样式 */
+a:link,a:visited{ 
+	text-decoration:none;
+	color:black; 
+}
+a:hover{	
+	text-decoration:none;
+	color:rgb(106, 181, 255);
+}
+/* 背景  */
+body{
+	background: url(../img/mbg.jpg);
+	background-repeat:no-repeat repeat;
+}
+#logo{
+	float:left;
+	display: inline;
+	line-height:50px;
+	vertical-align:bottom;
+	font-size: 28px;
+}
+/* 导航栏右侧链接 */
+#slink{
+	float:right;
+	font-size:16px;
+	line-height:50px;
+}
+#slink a{
+	color:#666;
+}
+#slink a:hover{
+	color:rgb(106, 181, 255);
+}
+
+/* 发布按钮 */
+#publish_button{
+	float:right;
+	width:100px;
+}
+.col-md-8{
+	margin-left:170px;
+}
+/* 微博内容 */
+.blog_content{
+	font-size:16px;
+}
+/* 用户名 */
+.blog a{
+	font-weight:bold;
+	font-size:15px;
+	color:black;
+}
+.blog a:hover{
+	color:rgb(106, 181, 255);
+}
+/* 时间 */
+.time{
+	color:gray;
+	font-size:12px;
+}
+/* 转发/评论里的用户名 */
+.rf a{
+	color:rgb(106, 181, 255);
+}
+
+/* 转发微博里的原微博*/
+.original{
+	font-size:15px;
+}
+.original a{
+	font-size:14px;
+}
+
+/* 微博操作 */
+.self_operation a{
+	display:inline-block;
+	width:230px;
+	color:#666;
+	text-align:center;
+}
+.self_operation a:hover{
+	color:rgb(106, 181, 255);
+}
+.follower_operation a{
+	display:inline-block;
+	width:350px;
+	color:#666;
+	text-align:center;
+}
+.follower_operation a:hover{
+	color:rgb(106, 181, 255);
+}
+/* 评论框 */
+.remark_zone{
+	display:inline;
+	margin-bottom:-14px;
+	width:610px;
+}
+/* 评论按钮 */
+.remark_button{
+	width:90px;
+}
+/* 评论/转发的内容 */
+.rf_content{
+	font-size:13px;
+}
+/* 查看更多 */
+.see_more{
+	margin-top:-10px;
+	text-decoration:underline;
+}
+/* 显示评论列表 */
+.remark_show{
+	margin-left:-15px;
+	margin-top:-20px;
+}
+/* 回复框 */
+.reply_zone{
+	display:inline;
+	margin-bottom:-14px;
+	width:576px;
+}
+/* 转发按钮 */
+.forward_button{
+	width:90px;
+	float:right;
+	margin-top:6px;
+}
+/* 用户界面    用户信息 */
+.user_info{
+	text-align:center;
+	font-size:18px;
+}
+
+/**
+ * 查询界面CSS
+ */
+/* 搜索框 */
+#search_text{
+	width:638px;
+	height:38px;
+	margin-right:10px;
+	border-radius: 4px;
+}
+/* 搜索按钮 */
+#search_button{
+	width:100px;
+	height:38px;
+}
+/* 搜索按钮文本 */
+#text{
+	color: white;
+	font-size: 19px;
+}
