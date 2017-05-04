@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/include/taglib.jsp"%>
+<%@ include file="/include/head.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,15 +12,15 @@
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">	
-	<script src="ot/jquery-2.0.0.min.js"></script>
-	<script src="ot/bootstrap.min.js"></script>  
-	<link href="ot/bootstrap.min.css" rel="stylesheet" media="screen" >
+	<script src="${ctx }/static/ot/jquery-2.0.0.min.js"></script>
+	<script src="${ctx }/static/ot/bootstrap.min.js"></script>  
+	<link href="${ctx }/static/ot/bootstrap.min.css" rel="stylesheet" media="screen" >
  	
- 	<link href="css/p_index.css" rel="stylesheet">
- 	<link href="css/loading.css" rel="stylesheet" >
- 	<script src="js/loaded.js"></script>
+ 	<link href="${ctx }/static/css/p_index.css" rel="stylesheet">
+ 	<link href="${ctx }/static/css/loading.css" rel="stylesheet" >
+ 	<script src="${ctx }/static/js/loaded.js"></script>
 </head>
-<body style="background: url(img/bg.jpg);">
+<body style="background: url(${ctx }/static/img/bg.jpg);">
 	<!-- Preloader -->
     <div id="loader-wrapper">
     <div id="loader"></div>
@@ -30,7 +32,7 @@
 		<div class="row" >
 			<div class="col-md-4">				
 				<p >
-					<img src="img/logo.png" style="width:60px"/><span >微博</span>
+					<img src="${ctx }/static/img/logo.png" style="width:60px"/><span >微博</span>
 				</p>
 				<div class="tabbable" style="margin-right:100px;">  
 				    <ul class="nav nav-tabs">  
