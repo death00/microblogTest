@@ -1,0 +1,45 @@
+/**
+ * 首页CSS
+ */
+a:link{ color: white; }
+a:visited,a:hover{	color: black;}
+*{ font-family: "微软雅黑";	}
+p{
+	font:italic bold 32px 'arial, helvetica, sans-serif';
+	color:white;
+}
+.tabbable{
+	padding:10px;
+	background: rgba(0, 0, 0, 0.44);
+}
+.col-md-4{
+	width:400px;
+	float:right;
+	margin-top:120px;
+}
+.nav-tabs li{
+    font-weight:bold;
+	width:125px;
+	text-align: center;
+}
+.form-group{
+	margin-bottom: 0px;
+	margin-top:10px;
+}
+.glyphicon{
+	width:16px;
+	margin-left:5px;
+	color: rgb(106, 181, 255);
+}
+.form-control{
+	display: inline;
+	width:220px;
+}
+.btn-info{
+	width:230px;
+	height:35px;
+	line-height:20px;
+	margin-left:15px;
+	color:white;
+	font-size: 20px;
+}
