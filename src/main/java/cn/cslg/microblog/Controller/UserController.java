@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -91,36 +92,36 @@ public class UserController {
 	}
 
 	@RequestMapping("user_loginCheck")
-	public void loginCheck(User user, HttpServletResponse httpServletResponse, ModelMap modelMap){	
+	@ResponseBody
+	public String loginCheck(User user, ModelMap modelMap){	
 		//modelMap自动与session对应，你在往modelmap中添加对应属性便是往session中添加属性（前提是你已经在@SessionAttributes注解中定义好）
 		User userTemp = this.userService.findByName(user.getName());
+		String result = "";
 		try {
 			//查看是否有这个用户名
 			if(userTemp==null){
-				httpServletResponse.getWriter().println("0");
-				return ;
+				result = "0";
 			}
 			//账号已被封
 			if(userTemp.getState() == 3){
-				httpServletResponse.getWriter().println("2");
-				return ;
+				result = "2";
 			}
 			//账号未激活
 			if(userTemp.getState() == 0){
-				httpServletResponse.getWriter().println("3");
-				return ;
+				result = "3";
 			}
 			//校对密码
 			if(userTemp.getPassword().equals(MD5.md5(user.getPassword()))){
 				modelMap.addAttribute("User", userTemp);		//成功将userTemp存入session中
-				httpServletResponse.getWriter().println("1");
+				result = "1";
 			}else {
-				httpServletResponse.getWriter().println("0");		
+				result = "0";
 			}
 		} catch (NoSuchAlgorithmException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return result;
 	}
 	
 	@RequestMapping("user_register")
